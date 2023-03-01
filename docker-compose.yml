@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  dynamodb:
+    image:  amazon/dynamodb-local
+    container_name: dynamodb
+    hostname: dynamodb
+    restart: always
+    volumes:
+      -  ./dynamodb:/home/dynamodblocal/data
+    ports:
+      - 8000:8000
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/"
+    
+  server:
+    build: ./server
+    ports:
+      - 5000:5000
+
+  swagger-ui:
+   image: swaggerapi/swagger-ui
+   container_name: swagger_ui
+   ports:
+      - "8080:8080"
+  #  volumes:
+  #     - ./doc:/usr/share/nginx/html/doc
+  #  environment:
+  #     API_URL: doc/openapi.yaml
